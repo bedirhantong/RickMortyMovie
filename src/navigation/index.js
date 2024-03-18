@@ -6,7 +6,11 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import MoviesScreen from "../screens/MoviesScreen";
 import CharactersScreen from "../screens/CharactersScreen";
 import SavedCharactersScreen from "../screens/SavedCharactersScreen";
+import SearchScreen from "../screens/SearchScreen";
+import PersonScreen from "../screens/PersonScreen";
+import EpisodeDetailScreen from "../screens/EpisodeDetailScreen";
 import { Ionicons } from "@expo/vector-icons";
+import SeasonEpisodesScreen from "../screens/SeasonEpisodes";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,6 +26,17 @@ export default function AppNavigation() {
       >
         <Stack.Screen name="HomeTabs" component={HomeTabs} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="SearchScreen" component={SearchScreen} />
+        <Stack.Screen name="PersonScreen" component={PersonScreen} />
+        <Stack.Screen
+          name="SeasonEpisodesScreen"
+          component={SeasonEpisodesScreen}
+        />
+
+        <Stack.Screen
+          name="EpisodeDetailScreen"
+          component={EpisodeDetailScreen}
+        />
       </Stack.Navigator>
     );
   }

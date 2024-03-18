@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import React, { Component } from "react";
 import axios from "axios";
+import { HeartIcon } from "react-native-heroicons/outline";
 
 const API = "https://rickandmortyapi.com/api/";
 class CharactersScreen extends Component {
@@ -41,6 +42,7 @@ class CharactersScreen extends Component {
     return (
       <View style={styles.container}>
         <FlatList
+          style={styles.list}
           data={this.state.characters}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
@@ -59,9 +61,13 @@ class CharactersScreen extends Component {
                     {item.species}
                   </Text>
                   <Text style={[styles.text, { fontWeight: "normal" }]}>
-                    {item.status}
+                    Gender: {item.gender}
+                  </Text>
+                  <Text style={[styles.text, { fontWeight: "normal" }]}>
+                    Last known location: {item.status}
                   </Text>
                 </View>
+                <HeartIcon color={"black"} />
               </View>
             );
           }}
@@ -81,14 +87,14 @@ class CharactersScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  contaier: {
+  container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
   list: { flex: 1, width: "100%", padding: 10, marginTop: 10 },
-  image: { width: 80, height: 80 },
+  image: { width: 100, height: 100 },
   row: { flex: 1, flexDirection: "row", margin: 10 },
   column: { flex: 1, flexDirection: "column", justifyContent: "flex-start" },
   text: { fontSize: 18 },

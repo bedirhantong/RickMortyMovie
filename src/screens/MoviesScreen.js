@@ -1,76 +1,120 @@
-/* 
-
-import { View, Text, SafeAreaView, Platform } from "react-native";
 import React from "react";
-import { StatusBar } from "expo-status-bar";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  Dimensions,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const ios = Platform.OS == "ios";
-export default function MoviesScreen() {
-  return <View classname="flex-1 bg-neutral-800"></View>;
-}
+const windowWidth = Dimensions.get("window").width;
+const itemWidth = (windowWidth - 20) / 2;
 
-*/
+const seasons = [
+  {
+    id: 1,
+    episodeLength: "1,2,3,4,5,6,7,8,9,10,11",
+    name: "Season 1",
+    image: require("../../assets/images/season1.png"),
+    description: "A strangely eccentric genius scientist and inventor ...",
+  },
+  {
+    id: 2,
+    episodeLength: "12,13,14,15,16,17,18,19,20,21",
+    name: "Season 2",
+    image: require("../../assets/images/season2.png"),
+    description: "The Smith family is invited to the wedding of ...",
+  },
+  {
+    id: 3,
+    episodeLength: "22,23,24,25,26,27,28,29,30,31",
+    name: "Season 3",
+    image: require("../../assets/images/season3.png"),
+    description:
+      "Following a stressful adventure, Rick and Morty go on a break ...",
+  },
+  {
+    id: 4,
+    episodeLength: "32,33,34,35,36,37,38,39,40,41",
+    name: "Season 4",
+    image: require("../../assets/images/season4.jpg"),
+    description:
+      "Morty discovers a race of intelligent space snakes after suffering ...",
+  },
+  {
+    id: 5,
+    episodeLength: "42,43,44,45,46,47,48,49,50,51",
+    name: "Season 5",
+    image: require("../../assets/images/season5.jpg"),
+    description:
+      "Rick is living his best anime life. Meanwhile in the Citadel of Ricks...",
+  },
+];
 
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import React, { Component } from "react";
-import axios from "axios";
+const MoviesScreen = () => {
+  const navigation = useNavigation();
 
-const API = "https://rickandmortyapi.com/api/";
-class MoviesScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      episodes: [],
-    };
-  }
+  const handleSeasonPress = (episodeLength) => {
+    navigation.navigate("SeasonEpisodesScreen", { episodeLength });
+  };
 
-  getEpisodes() {
-    axios
-      .get(`${API}episode`)
-      .then((response) => {
-        this.setState({
-          characters: (response.data && response.data.results) || [],
-        });
-      })
-      .catch((error) => {
-        console.log("error: ", error);
-      });
-  }
-  componentDidMount() {
-    this.getEpisodes();
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Episodes</Text>
-        <FlatList
-          data={this.state.episodes}
-          renderItem={({ item, index }) => {
-            return (
-              <View key={index} style={styles.row}>
-                {" "}
-              </View>
-            );
-          }}
-        />
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={seasons}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => handleSeasonPress(item.episodeLength)}
+          >
+            <View style={[styles.seasonContainer, { width: itemWidth }]}>
+              <Image source={item.image} style={styles.seasonImage} />
+              <Text style={styles.seasonName}>{item.name}</Text>
+              <Text style={styles.seasonDesc}>{item.description}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  contaier: {
+  container: {
     flex: 1,
-    backgroundColor: "#fff",
+    justifyContent: "flex-start",
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#fff",
   },
-  list: { flex: 1, width: "100%", padding: 10, marginTop: 10 },
-  image: { width: 80, height: 80 },
-  row: { flex: 1, flexDirection: "row", margin: 10 },
-  column: { flex: 1, flexDirection: "column", justifyContent: "flex-start" },
-  text: { fontSize: 18 },
+  seasonContainer: {
+    margin: 5,
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#97ce4c",
+  },
+  seasonImage: {
+    width: itemWidth - 10,
+    height: itemWidth - 10,
+    resizeMode: "cover",
+    borderRadius: 2,
+    marginVertical: 5,
+  },
+  seasonName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 5,
+  },
+  seasonDesc: {
+    fontSize: 14,
+    fontWeight: "normal",
+    textAlign: "center",
+    marginVertical: 1,
+  },
 });
 
 export default MoviesScreen;
