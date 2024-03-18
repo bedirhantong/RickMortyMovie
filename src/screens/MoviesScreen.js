@@ -9,6 +9,8 @@ import {
   Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { BellIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
+import { SearchBar } from "react-native-elements";
 
 const windowWidth = Dimensions.get("window").width;
 const itemWidth = (windowWidth - 20) / 2;
@@ -63,6 +65,12 @@ const MoviesScreen = () => {
 
   return (
     <View style={styles.container}>
+      <View className="flex-row space-x-4">
+        <BellIcon size={30} strokeWidth={2} color="black" />
+        <TouchableOpacity onPress={() => navigation.navigate("SearchScreen")}>
+          <MagnifyingGlassIcon size={30} strokeWidth={2} color="black" />
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={seasons}
         keyExtractor={(item) => item.id.toString()}
