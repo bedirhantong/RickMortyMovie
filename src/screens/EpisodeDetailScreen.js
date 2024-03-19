@@ -11,8 +11,8 @@ import {
 import axios from "axios";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-const height = (windowHeight - 20) / 2;
-const width = (windowWidth - 20) / 2;
+const height = (windowHeight - 10) / 2;
+const width = (windowWidth - 10) / 2;
 const EpisodeDetailScreen = ({ route }) => {
   const { episode } = route.params;
   const [characters, setCharacters] = useState([]);

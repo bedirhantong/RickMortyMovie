@@ -11,6 +11,7 @@ import PersonScreen from "../screens/PersonScreen";
 import EpisodeDetailScreen from "../screens/EpisodeDetailScreen";
 import { Ionicons } from "@expo/vector-icons";
 import SeasonEpisodesScreen from "../screens/SeasonEpisodes";
+import CharacterDetailScreen from "../screens/CharacterDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,6 +29,10 @@ export default function AppNavigation() {
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
         <Stack.Screen name="PersonScreen" component={PersonScreen} />
+        <Stack.Screen
+          name="CharacterDetailScreen"
+          component={CharacterDetailScreen}
+        />
         <Stack.Screen
           name="SeasonEpisodesScreen"
           component={SeasonEpisodesScreen}

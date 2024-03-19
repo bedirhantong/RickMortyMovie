@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { BellIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
-import { SearchBar } from "react-native-elements";
 
 const windowWidth = Dimensions.get("window").width;
 const itemWidth = (windowWidth - 20) / 2;
@@ -105,9 +104,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#97ce4c",
   },
   seasonImage: {
-    width: itemWidth - 10,
-    height: itemWidth - 10,
-    resizeMode: "cover",
+    width: itemWidth,
+    height: itemWidth,
+    resizeMode: "contain",
     borderRadius: 2,
     marginVertical: 5,
   },
@@ -121,7 +120,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "normal",
     textAlign: "center",
-    marginVertical: 1,
+    marginBottom: 10,
+    marginHorizontal: 10,
   },
 });
 

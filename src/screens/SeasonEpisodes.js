@@ -1,3 +1,117 @@
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Dimensions,
+} from "react-native";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+
+const API = "https://rickandmortyapi.com/api/episode/";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+const height = (windowHeight - 20) / 2;
+const width = (windowWidth - 20) / 2;
+const EpisodeListScreen = ({ route }) => {
+  const [episodes, setEpisodes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { episodeLength } = route.params;
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const fetchEpisodes = async () => {
+      try {
+        const response = await axios.get(`${API}${episodeLength}`);
+        setEpisodes(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching episodes:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchEpisodes();
+
+    return () => {};
+  }, [episodeLength]);
+
+  const handleEpisodePress = (episode) => {
+    navigation.navigate("EpisodeDetailScreen", { episode });
+  };
+
+  const renderEpisodeItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.episodeItem}
+      onPress={() => handleEpisodePress(item)}
+    >
+      <View>
+        <Image
+          source={require("../../assets/images/splash.jpg")}
+          style={{
+            width,
+            height: height * 0.35,
+          }}
+        />
+      </View>
+      <Text style={styles.episodeName}>{item.name}</Text>
+      <Text style={styles.episodeInfo}>{item.episode}</Text>
+      <Text style={styles.episodeInfo}>{item.air_date}</Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <View style={styles.container}>
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <FlatList
+          data={episodes}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderEpisodeItem}
+          contentContainerStyle={styles.listContent}
+        />
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+  },
+  listContent: {
+    paddingHorizontal: 10,
+    paddingTop: 20,
+  },
+  list: { flex: 1, width: "100%", padding: 10, marginTop: 10 },
+  image: { width: 80, height: 80 },
+  row: { flex: 1, flexDirection: "row", margin: 10 },
+  column: { flex: 1, flexDirection: "column", justifyContent: "flex-start" },
+  episodeItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  episodeName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  episodeInfo: {
+    fontSize: 16,
+    color: "#666",
+  },
+});
+
+export default EpisodeListScreen;
+
 /*
 
 import {
@@ -169,118 +283,3 @@ export default SeasonEpisodesScreen;
 
 
 */
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Dimensions,
-} from "react-native";
-import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
-
-const API = "https://rickandmortyapi.com/api/episode/";
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
-const height = (windowHeight - 20) / 2;
-const width = (windowWidth - 20) / 2;
-const EpisodeListScreen = ({ route }) => {
-  const [episodes, setEpisodes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { episodeLength } = route.params;
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const fetchEpisodes = async () => {
-      try {
-        const response = await axios.get(`${API}${episodeLength}`);
-        setEpisodes(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching episodes:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchEpisodes();
-
-    return () => {
-      // Cleanup function
-    };
-  }, [episodeLength]);
-
-  const handleEpisodePress = (episode) => {
-    navigation.navigate("EpisodeDetailScreen", { episode });
-  };
-
-  const renderEpisodeItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.episodeItem}
-      onPress={() => handleEpisodePress(item)}
-    >
-      <View>
-        <Image
-          source={require("../../assets/images/splash.jpg")}
-          style={{
-            width,
-            height: height * 0.35,
-          }}
-        />
-      </View>
-      <Text style={styles.episodeName}>{item.name}</Text>
-      <Text style={styles.episodeInfo}>{item.episode}</Text>
-      <Text style={styles.episodeInfo}>{item.air_date}</Text>
-    </TouchableOpacity>
-  );
-
-  return (
-    <View style={styles.container}>
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          data={episodes}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderEpisodeItem}
-          contentContainerStyle={styles.listContent}
-        />
-      )}
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-  },
-  listContent: {
-    paddingHorizontal: 10,
-    paddingTop: 20,
-  },
-  list: { flex: 1, width: "100%", padding: 10, marginTop: 10 },
-  image: { width: 80, height: 80 },
-  row: { flex: 1, flexDirection: "row", margin: 10 },
-  column: { flex: 1, flexDirection: "column", justifyContent: "flex-start" },
-  episodeItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  episodeName: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  episodeInfo: {
-    fontSize: 16,
-    color: "#666",
-  },
-});
-
-export default EpisodeListScreen;

@@ -21,7 +21,6 @@ const movieApiCall = async (endpoints, params) => {
   }
 };
 
-// Home Screen Apis
 export const fetchEpisodes = (page) => {
   return movieApiCall(episodeEndpoint(page));
 };
